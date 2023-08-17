@@ -1,19 +1,23 @@
 #!/bin/bash
 
-#clone the latest laravel into directory
-git clone https://github.com/laravel/laravel.git laravel
+#clone the  HFS Laravel project into laravel directory
+git clone https://github.com/tjrchampion/hfs-test-test-lara.git laravel
 
 #move directory
 cd laravel
 
-#run composer install in container then dispose of it
-docker container run --rm -v $(pwd):/app composer install
+#run everything 
+docker-compose build
 
-#rename the env
-mv .env.example .env
+#run composer install in container then dispose of it
+docker container run --rm -v $(pwd):/app composer update && composer install
 
 #move directory
 cd ../
+
+#copy over the env into laravel project.
+# I've generated a key for you, however you may wish to run "docker-compose exec app php artisan key:generate"
+cp .env.example laravel/.env
 
 #run everything 
 docker-compose up

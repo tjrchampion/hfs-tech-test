@@ -1,27 +1,10 @@
-Docker-Laravel
+Docker environment for HFS tech test
 ==============
-Dead simple Laravel docker-compose set up for quick local dev/testing with Nginx/MySQL. **NOT** to be used for production in this state, but could be adapted as such.
+A quick local dev/testing Docker container with Nginx/MySQL and Laravel. This repo does not include the laravel portion of the test. Please follow `setup.sh` directions below which will pull in the repo that holds the laravel project
 
-90 percent of the set up is automatic. Just run `sh setup.sh` from a blank project directory.
-Laravel sits inside `./{project_name}/laravel`. Update your `.env` with the below default settings.
+Git clone this repo run `sh setup.sh` from a blank project directory.
+Laravel sits inside `./{project_name}/laravel`. Env will be copied into `laravel/.env` with key already generated, you may choose to run commands listed below.
 
-MySQL Connection
-----------------
-Notice that the DB_PORT points to 33061, which is a host(Your Computer) mapping to our internal container port of 3306. We map it slightly different to stop any conflicts which might already be running on your host. 
-
-Additionally notice the **DB_HOST** point to **127.0.0.1** (localhost) you can also use **"mysqldb"** which is our service name. See docker-compose.yml if you are confused.
-
-```
-APP_URL=http://localhost:8080 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=33061
-DB_DATABASE=app
-DB_USERNAME=app
-DB_PASSWORD=password
-```
-
----
 
 The above details are dependent on the docker-compose file. You can adjust the settings under `mysqldb.evironment` per project. If you do this be sure to run `docker-compose build` to pull in your new configurations.
 
@@ -31,8 +14,10 @@ Note: Create an alias in ~/.bash_profile  `alias phpd="docker-compose exec app p
 
 When you're finished developing you can run: `docker-compose down` to remove all containers.
 
-**Notice:** This has been developed solely for my own use, however I welcome anyone who wishes to use this or give advice/contribute. Just be aware its a work in progress and its advised for local/dev and testing only and requires basic Docker knowledge before use.
+**Docker is Optional**
+It is worth noting that running Laravel with Docker is entirely optional. I would recommend using my custom Docker environment in this instance, but you could quite easily run this using Laravel's own Docker implementation, Sail... 
+You spin it up with Valet or Herd if this is your prefered way of running it. You can easily clone the project repo instead of this one, and composer install the project. The .env.example is configured with defaults for the MySQL using Docker, but that would be easily changed.
 
-Currently working with: Docker version 18.03.0-ce, build 0520e24
+This Docker environment is tested on Mac OS only using Docker Desktop Version 3.6.0 (3.6.0.5487). I don't have Windows in order to confirm it runs smoothly.
 
-Cheers, Tom. :beers:
+Cheers, Tom.

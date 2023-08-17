@@ -1,5 +1,5 @@
-#@ latest but for production should be a specifed version nginx:.13.12
-FROM nginx
+  #latest, but for production should be a specifed version...
+FROM nginx:latest
 
 #add our editable config to our container
-ADD vhost.conf /etc/nginx/conf.d/default.conf
+ADD default.conf /etc/nginx/conf.d/default.conf
