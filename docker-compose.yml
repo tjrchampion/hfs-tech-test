@@ -9,6 +9,8 @@ services:
     working_dir: /var/www/laravel
     volumes:
       - './laravel:/var/www/laravel'
+    networks:
+      - lara-network
     environment:
       - DB_HOST=mysqldb #same name as service below
       - DB_PORT=3306
@@ -18,11 +20,16 @@ services:
     build:
       context: ./
       dockerfile: web.dockerfile
-    working_dir: /var/www
+    working_dir: /var/www/laravel
     volumes:
-      - app
+      - './laravel:/var/www/laravel'
+    networks:
+      - lara-network
     ports: 
       - "8080:80"
+      - "3000:3000"
+    depends_on:
+      - app
 
   #MYSQL DB
   mysqldb:
@@ -36,7 +43,27 @@ services:
       - "MYSQL_ROOT_PASSWORD=rootpassword"
     ports:
       - "33061:3306"
+    networks:
+      - lara-network
+
+  npm:
+    image: node:alpine
+    container_name: npm
+    volumes:
+      - ./laravel:/var/www/laravel
+    ports:
+      - 3100:3100
+      - 3001:3001
+    working_dir: /var/www/laravel
+    profiles: ["npm"]
+    entrypoint: ['npm']
+    networks:
+      - lara-network
 
 #select volumes to use
 volumes:
   ladata:
+
+networks:
+  lara-network:
+    driver: bridge
